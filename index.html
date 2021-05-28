@@ -16,16 +16,13 @@
         <section id="best_movie">
             <article>
                 <div id="best_movie_title">Titre de la vidéo</div>
-                <button id="best_movie_button" onclick="play()"><img src="static/images/play.jpeg" alt="" /></button>
+                <a id="best_movie_button" href="#overlay"><img src="static/images/play.jpeg" alt="" /></a>
             </article>
             <aside>
             <div id="best_movie_cover"><img src="static/images/mn_1.jpeg" alt="" /></div>
             </aside>
         </section>
 
-        <dialog id="mydialog">
-            Voici une fenêtre d'information !<br />
-        </dialog>
 
         <h1>Films les mieux notés</h1>
         <section class="movies">
@@ -66,6 +63,25 @@
             <div class="movie"><img src="static/images/test200.jpeg" alt="" /></div>
             <button class="right_arrow" onclick="right_arrow()"><img src="static/images/right_arrow.jpeg" alt="" /></button>
         </section>
+
+        <div id="overlay">
+            <div class="popup_block">
+                <a class="close" href="#noWhere"><img alt="Fermer" title="Fermer la fenêtre" class="btn_close" src="static/images/close_popUp.png"></a>
+                <img style="float: right; margin: 0 0 0 20px;" alt="Lil bomb dude" src="static/images/meilleurFilm.jpeg">
+                <h2>Titre du film</h2>
+                <p>Genre complet</p>
+                <p>Date de sortie</p>
+                <p>Rated</p>
+                <p>score Imdb</p>
+                <p>Réalisateur</p>
+                <p>Liste des acteurs</p>
+                <p>Durée</p>
+                <p>Pays d'origine</p>
+                <p>Résultat au box office</p>
+                <p>Résumé</p>
+
+            </div>
+        </div>
 
     </body>
 </html>

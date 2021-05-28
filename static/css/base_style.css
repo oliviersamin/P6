@@ -1,0 +1,106 @@
+header
+{
+    color: white;
+    background-color: grey;
+    display: flex;
+    align-items: center;
+    height: 100px;
+    width: 80%;
+    margin: auto;
+    margin-bottom: 5%;
+}
+
+#logo
+{
+    margin-left: 5%;
+}
+
+#index_page
+{
+    margin-left: 40%;
+    color: white;
+}
+
+#category_page
+{
+    color: white;
+    margin-left: 10%;
+}
+
+/* End of header and its components */
+
+#best_movie
+{
+    border: 3px black solid;
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+    height: 250px;
+    margin: auto;
+    margin-bottom: 5%;
+
+}
+
+article
+{
+    display: flex;
+    flex-direction: column;
+    margin-top: 4%;
+
+}
+
+#best_movie_title
+{
+    margin-bottom: 5%;
+    margin-left: 5%;
+}
+
+#best_movie_button
+{
+    margin-left: 10%;
+}
+
+#best_movie_cover
+{
+    align-items: center;
+}
+
+/* End of best movie section and its components */
+
+.movies
+{
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-left: 10%;
+    margin-top:5%;
+    margin-bottom: 10%;
+
+}
+
+h1
+{
+    color: black;
+    text-align: center;
+    margin-bottom: 5%;
+}
+
+.movie
+{
+    border: 3px black solid;
+    width: 20%;
+}
+/* End of movies section */
+
+
+dialog
+{
+    border-radius: 10px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+}
+
+dialog::backdrop
+{
+    background-color: rgba(0, 0, 0, 0.6);
+}

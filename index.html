@@ -3,6 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="static/css/base_style.css" />
+<!--        <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.min.js"></script>-->
+<!--        <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5.2.packed.js"></script>-->
+<!--        <script src="static/js/actions.js" ></script>-->
         <title>JustStreamIt</title>
     </head>
     <header>
@@ -12,11 +15,11 @@
     </header>
 
     <body>
-    <script src="static/js/actions.js" ></script>
         <section id="best_movie">
             <article>
                 <div id="best_movie_title">Titre de la vidéo</div>
                 <a id="best_movie_button" href="#overlay"><img src="static/images/play.jpeg" alt="" /></a>
+<!--                <a id="best_movie_button" href="getMovieInfo()"><img src="static/images/play.jpeg" alt="" /></a>-->
             </article>
             <aside>
             <div id="best_movie_cover"><img src="static/images/mn_1.jpeg" alt="" /></div>
@@ -26,7 +29,7 @@
 
         <h1>Films les mieux notés</h1>
         <section class="movies">
-            <button class="left_arrow" onclick="$dialog.show()"><img src="static/images/left_arrow.jpeg" alt="" /></button>
+            <button class="left_arrow" onclick="getMovieInfo()"><img src="static/images/left_arrow.jpeg" alt="" /></button>
             <div class="movie"><img src="static/images/test200.jpeg" alt="" /></div>
             <div class="movie"><img src="static/images/test200.jpeg" alt="" /></div>
             <div class="movie"><img src="static/images/test200.jpeg" alt="" /></div>
@@ -68,20 +71,23 @@
             <div class="popup_block">
                 <a class="close" href="#noWhere"><img alt="Fermer" title="Fermer la fenêtre" class="btn_close" src="static/images/close_popUp.png"></a>
                 <img style="float: right; margin: 0 0 0 20px;" alt="Lil bomb dude" src="static/images/meilleurFilm.jpeg">
-                <h2>Titre du film</h2>
-                <p>Genre complet</p>
-                <p>Date de sortie</p>
-                <p>Rated</p>
-                <p>score Imdb</p>
-                <p>Réalisateur</p>
-                <p>Liste des acteurs</p>
-                <p>Durée</p>
-                <p>Pays d'origine</p>
-                <p>Résultat au box office</p>
-                <p>Résumé</p>
+                <article id ='movieInfo'>
+                    <h2>Titre du film</h2>
+                    <p>Genre complet</p>
+                    <p>Date de sortie</p>
+                    <p>Rated</p>
+                    <p>score Imdb</p>
+                    <p>Réalisateur</p>
+                    <p>Liste des acteurs</p>
+                    <p>Durée</p>
+                    <p>Pays d'origine</p>
+                    <p>Résultat au box office</p>
+                    <p>Résumé</p>
+                </article>
 
             </div>
         </div>
+        <script language="JavaScript" type="text/javascript" src="static/js/actions.js"></script>
 
     </body>
 </html>

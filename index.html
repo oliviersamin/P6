@@ -3,29 +3,26 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="static/css/base_style.css" />
-<!--        <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.min.js"></script>-->
-<!--        <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5.2.packed.js"></script>-->
-<!--        <script src="static/js/actions.js" ></script>-->
         <title>JustStreamIt</title>
     </head>
     <header>
-        <div id="logo">JustStreamIt</div>
+        <div id="logo"><img src="static/images/logo.png" alt="" /></div>
         <a href="#" id="index_page">Accueil</a>
-        <a href="#" id="category_page">Catégories</a>
+        <a href="#animation_movies" id="category_page">Catégories</a>
     </header>
 
     <body>
         <section id="best_movie">
-            <article>
-                <div id="best_movie_title"></div>
-                <a id="best_movie_button" href="#overlay"><img src="static/images/play.jpeg" alt="" /></a>
-<!--                <a id="best_movie_button" href="getMovieInfo()"><img src="static/images/play.jpeg" alt="" /></a>-->
-            </article>
-            <aside>
-            <div id="best_movie_cover"><img src="#" alt="" /></div>
-            </aside>
-        </section>
+            <div id="best_top">
+                <div id="best_movie_cover"><img src="#" alt="" /></div>
+                <div id="best_right">
+                    <div id="best_movie_title"></div>
+                    <div id="best_movie_button"><img src="static/images/play2.png" alt="" /></div>
+                    <div id="best_movie_description"></div>
+                </div>
+            </div>
 
+        </section>
 
         <h1>Films les mieux notés</h1>
         <section class="movies">
@@ -57,7 +54,7 @@
             <button class="right_arrow" onclick="right_arrow()"><img src="static/images/right_arrow.jpeg" alt="" /></button>
         </section>
 
-        <h1>Animation</h1>
+        <h1 id="animation_movies">Animation</h1>
         <section class="movies">
             <button class="left_arrow" onclick="left_arrow()"><img src="static/images/left_arrow.jpeg" alt="" /></button>
             <div class="movie"><img src="#" alt="" /></div>
@@ -67,26 +64,19 @@
             <button class="right_arrow" onclick="right_arrow()"><img src="static/images/right_arrow.jpeg" alt="" /></button>
         </section>
 
-        <div id="overlay">
-            <div class="popup_block">
-                <a class="close" href="#noWhere"><img alt="Fermer" title="Fermer la fenêtre" class="btn_close" src="static/images/close_popUp.png"></a>
-                <img style="float: right; margin: 0 0 0 20px;" alt="Lil bomb dude" src="static/images/meilleurFilm.jpeg">
-                <article id ='movieInfo'>
-                    <h2>Titre du film</h2>
-                    <p>Genre complet</p>
-                    <p>Date de sortie</p>
-                    <p>Rated</p>
-                    <p>score Imdb</p>
-                    <p>Réalisateur</p>
-                    <p>Liste des acteurs</p>
-                    <p>Durée</p>
-                    <p>Pays d'origine</p>
-                    <p>Résultat au box office</p>
-                    <p>Résumé</p>
-                </article>
-
-            </div>
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+          <!-- Modal content -->
+          <div class="modal-content">
+              <div id="close_modal_button"><img alt="Fermer" title="Fermer la fenêtre" class="btn_close" src="static/images/close_popUp.png"></div>
+              <div id = "movie_details">
+                <div id="movie_cover_in_modal">Cover of the movie to put here</div>
+                <div id="movie_info_left">The needed info on the movie</div>
+              </div>
+              <div id="movie_description">The needed info on the movie</div>
+          </div>
         </div>
+
         <script language="JavaScript" type="text/javascript" src="static/js/actions.js"></script>
 
     </body>

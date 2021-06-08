@@ -1,11 +1,17 @@
-let url_test = 'http://localhost:8000/api/v1/titles/9'
 // URLs to get the movies
-let url_get_comedy_movies = 'http://localhost:8000/api/v1/titles/?genre=comedy&sort_by=imdb_score'
-let url_get_animation_movies = 'http://localhost:8000/api/v1/titles?sort_by=imdb_score&genre=animation'
-let url_get_family_movies = 'http://localhost:8000/api/v1/titles?sort_by=imdb_score&genre=family'
-let url_get_best_movies = 'http://localhost:8000/api/v1/titles?sort_by=imdb_score'
+let url_get_comedy_movies = 'http://localhost:8000/api/v1/titles/?genre=comedy&sort_by=imdb_score';
+let url_get_animation_movies = 'http://localhost:8000/api/v1/titles?sort_by=imdb_score&genre=animation';
+let url_get_family_movies = 'http://localhost:8000/api/v1/titles?sort_by=imdb_score&genre=family';
+let url_get_best_movies = 'http://localhost:8000/api/v1/titles?sort_by=imdb_score';
+const movies_html_class = document.getElementsByClassName("movies");
 
-
+// modal and content variables
+var modal = document.getElementById("myModal");
+var close_btn = document.getElementById("close_modal_button");
+var movie_info_left = document.getElementById("movie_info_left");
+var movie_cover_in_modal = document.getElementById("movie_cover_in_modal");
+var movie_description_in_modal = document.getElementById("movie_description");
+var play_best_movie = document.getElementById("best_movie_button");
 
 // class to define a movie with all the attributs asked by client
 class Movie {
@@ -23,7 +29,7 @@ class Movie {
         this.duration = "";
         this.countries = "";
         this.worldwide_gross_income = "";
-        this.description = "";
+        this.long_description = "";
     }
 
     async set_info() {
@@ -56,19 +62,64 @@ class Movie {
 
 
 class Categories {
-    constructor(url_start,length) {
+    constructor(url_start,length, rank_in_html) {
         return (async () => {
         this.url_start = url_start;
         this.length = length
         this.nb_pages = 0;
         this.urls_movies = [];
         this.movies = [];
+        this.section = movies_html_class[rank_in_html];
+        this.right_arrow = "";
+        this.left_arrow = "";
+        this.movies_displayed = [];
         await this.getLastPagesFromAPI();
-//        console.log('dans constructor apres getLastPagesFromAPI');
         await this.set_all_movies_info();
-//        console.log('dans constructor apres set_all_movies_info');
+        this.basic_display()
         return this;
         })();
+    }
+
+
+    display_next_movies () {
+        console.log('dans display_next_movies');
+        const children = this.section.children;
+        let m = 0;
+        for (let i=1; i< children.length - 1 ; i++) {
+                if (this.movies.length ==7){
+                    m = i + 2 ;
+                } else {
+                    m = i + 3;
+                }
+            children[i].innerHTML = "<button class='movie'><img src=" + this.movies[m].image_url + " alt='' /></button>";
+            let movie = this.movies[m];
+            children[i].addEventListener('click',function(){
+                modify_popUp_content(movie)
+            })
+        }
+        this.right_arrow.style.visibility = 'hidden'
+        this.left_arrow.style.visibility = 'visible'
+    }
+
+    basic_display()     {
+        const children = this.section.children;
+        this.left_arrow = children[0];
+        this.right_arrow = children[5];
+        this.left_arrow.style.visibility = 'hidden';
+        this.right_arrow.style.visibility = 'visible';
+        let m = 0;
+        for (let i=1; i< children.length - 1 ; i++) {
+                if (this.movies.length ==7){
+                    m = i -1 ;
+                } else {
+                    m = i;
+                }
+            children[i].innerHTML = "<button class='movie'><img src=" + this.movies[m].image_url + " alt='' /></button>";
+            let movie = this.movies[m];
+            children[i].addEventListener('click',function(){
+                modify_popUp_content(movie)
+            })
+        }
     }
 
     async set_all_movies_info() {
@@ -100,7 +151,7 @@ class Categories {
 //        console.log('dans get_all_urls_movies() ')
         this.loopToGetUrlsFromPage(data);
         if (this.check_if_get_all_urls_movies()) {
-            console.log('toutes les urls sont récupérées')
+//            console.log('urls OK')
         } else {
 //            console.log('dans else')
            var info = await this.getRawInfoFromApi(data.previous);
@@ -164,60 +215,90 @@ class Categories {
 
 }
 
-
-// fonctions tests to be erased or modified at the end of program
-function left_arrow() {
-console.log('fonction left_arrow OK');
+close_btn.onclick = function() {
+  modal.style.display = "none";
 }
 
-function right_arrow() {
-console.log('fonction right_arrow OK');
+function modify_popUp_content(movie){
+    console.log('click sur le film : ' + movie.title);
+    let info_movie_left = "<ul>";
+    const info_movie_dico = {Titre: movie.title, Genre: movie.genres, 'Score imdb': movie.imdb_score, Durée: movie.duration + "minutes", 'Date de sortie': movie.year,
+     Pays: movie.countries, Réalisateurs: movie.directors, Acteurs: movie.actors, Rated: movie.rated, 'Résultat au box ofice': movie.worldwide_gross_income};
+    for (const [key, value] of Object.entries(info_movie_dico)) {
+        var line = "<li><strong>" + key + "</strong>: " + value + "</li>";
+        info_movie_left = info_movie_left.concat(line);
+    }
+    info_movie_left = info_movie_left + "</ul>"
+    console.log(info_movie_left)
+    movie_cover_in_modal.innerHTML = "<div id='movie_cover_in_modal'><img alt='' title='' src=" + movie.image_url + "></div>";
+    movie_info_left.innerHTML = "<div id='movie_info_in_modal'>" + info_movie_left + "</div>";
+    movie_description_in_modal.innerHTML = '<div id="movie_description"><strong>Description: </strong>' + movie.long_description + '</div>'
+    modal.style.display = "block";
+
+
 }
 
 function best_movie_display(movie_category) {
     const best_movie_cover = document.getElementById("best_movie_cover");
     const best_movie_title = document.getElementById("best_movie_title");
+    const best_movie_description = document.getElementById("best_movie_description");
 //    console.log(movie_category.movies[0].image_url, movie_category.movies[0].title);
     best_movie_cover.innerHTML = "<div id='best_movie_cover'><img src=" + movie_category.movies[0].image_url + " alt='' /></div>";
-    best_movie_title.innerHTML = "<div id='best_movie_title'>" + movie_category.movies[0].title + "</div>";
-}
-
-function basic_display(movie_category, rank) {
-    const movies_html_class = document.getElementsByClassName("movies");
-//    console.log(movies_html_class)
-    display_movies_in_section(movies_html_class[rank], movie_category);
-}
-
-function display_movies_in_section(arg, movie_category) {
-    const children = arg.children;
-    let m = 0;
-    for (let i=1; i< children.length - 1 ; i++) {
-            if (movie_category.movies.length ==7){
-                m = i -1 ;
-            } else {
-                m = i;
-            }
-//        console.log(m, movie_category.movies[m].genres, movie_category.movies[m].imdb_score)
-        children[i].innerHTML = "<div class='movie'><img src=" + movie_category.movies[m].image_url + " alt='' /></div>"
-    }
+    best_movie_title.innerHTML = "<div id='best_movie_title'><strong>" + movie_category.movies[0].title + "</strong></div>";
+    best_movie_description.innerHTML = "<div id='best_movie_description'><strong>Description: </strong>" + movie_category.movies[0].long_description + "</div>";
 }
 
 async function main() {
-    console.log('début de main...');
-    const category_best = await new Categories(url_get_best_movies,8);
-    console.log('CATEGORY_BEST SAVED IN CLASS');
+    const category_best = await new Categories(url_get_best_movies,8,0);
+    category_best.left_arrow.onclick = function() {
+        console.log('test fleche gauche');
+        category_best.basic_display();
+
+    }
+    category_best.right_arrow.onclick = function() {
+        console.log('test fleche droite');
+        category_best.display_next_movies();
+    }
+
     best_movie_display(category_best);
-    basic_display(category_best,0);
-    const category_comedy = await new Categories(url_get_comedy_movies,7);
-    console.log('CATEGORY_COMEDY SAVED IN CLASS');
-    basic_display(category_comedy,1);
-    const category_family = await new Categories(url_get_family_movies,7);
-    console.log('CATEGORY_FAMILY SAVED IN CLASS');
-    basic_display(category_family,2);
-    const category_animation = await new Categories(url_get_animation_movies,7);
-    console.log('CATEGORY_ANIMATION SAVED IN CLASS');
-    basic_display(category_animation,3);
-    console.log('fin de main....');
+    best_movie_button.onclick = function() {
+        modify_popUp_content(category_best.movies[0]);
+    }
+
+    const category_comedy = await new Categories(url_get_comedy_movies,7,1);
+    category_comedy.left_arrow.onclick = function() {
+        console.log('test fleche gauche');
+        category_comedy.basic_display();
+
+    }
+    category_comedy.right_arrow.onclick = function() {
+        console.log('test fleche droite');
+        category_comedy.display_next_movies();
+    }
+
+    const category_family = await new Categories(url_get_family_movies,7,2);
+    category_family.left_arrow.onclick = function() {
+        console.log('test fleche gauche');
+        category_family.basic_display();
+
+    }
+    category_family.right_arrow.onclick = function() {
+        console.log('test fleche droite');
+        category_family.display_next_movies();
+    }
+
+    const category_animation = await new Categories(url_get_animation_movies,7,3);
+    category_animation.left_arrow.onclick = function() {
+        console.log('test fleche gauche');
+        category_animation.basic_display();
+
+    }
+    category_animation.right_arrow.onclick = function() {
+        console.log('test fleche droite');
+        category_animation.display_next_movies();
+    }
 }
 
 main()
+
+

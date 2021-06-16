@@ -82,7 +82,6 @@ class Categories {
 
 
     display_next_movies () {
-        console.log('dans display_next_movies');
         const children = this.section.children;
         let m = 0;
         for (let i=1; i< children.length - 1 ; i++) {
@@ -123,23 +122,16 @@ class Categories {
     }
 
     async set_all_movies_info() {
-//        await this.getLastPagesFromAPI();
-//        console.log('dans set_all_movies_info()')
         for (let index=0; index < this.urls_movies.length; index++){
-//            let data = await this.getRawInfoFromApi(this.urls_movies[index]);
             const movie = new Movie(this.urls_movies[index])
             await movie.set_info()
             this.movies.push(movie)
-
-//            console.log('index = ' + index + '  title = ' + data.title + '  imdb = ' + data.imdb_score)
         }
     }
 
     async getLastPagesFromAPI() {
-//    console.log('dans getLastPagesFromAPI()')
     var data = await this.getRawInfoFromApi(this.url_start)
     this.nb_pages = Math.ceil(data.count/data.results.length);
-//    console.log(this.nb_pages, Math.ceil(this.nb_pages));
     let url = this.transform_url(this.url_start, this.nb_pages);
     var data2 = await this.getRawInfoFromApi(url);
     let urls_to_get = this.length;
@@ -148,24 +140,17 @@ class Categories {
     }
 
     async get_all_urls_movies(data) {
-//        console.log('dans get_all_urls_movies() ')
         this.loopToGetUrlsFromPage(data);
         if (this.check_if_get_all_urls_movies()) {
-//            console.log('urls OK')
         } else {
-//            console.log('dans else')
            var info = await this.getRawInfoFromApi(data.previous);
-//           console.log(info.results);
            return this.get_all_urls_movies(info)
         }
-//    console.log('fin de get_all_urls_movies : ' + this.urls_movies.length + '   ' + this.urls_movies)
     }
 
     check_if_get_all_urls_movies(){
-//    console.log('dans check_if_get_all_urls_movies: ' + this.urls_movies.length + ' ' +  this.length)
     if (this.urls_movies.length < this.length) {
         let count = this.length - this.urls_movies.length;
-//        console.log('il manque ' + count + ' urls');
         return false
     } else {
         return true
@@ -173,11 +158,8 @@ class Categories {
     }
 
     async check_if_last_page(pageJson) {
-//    console.log('dans check_if_last_page()')
     if (pageJson.next == null) {
-//        console.log('dernière page, il y a ' + pageJson.results.length + ' films')
         return pageJson
-//        console.log(data2.results);
     } else {
         let data = await this.getRawInfoFromApi(pageJson.next)
         return check_if_last_page(data)
@@ -185,10 +167,8 @@ class Categories {
     }
 
     loopToGetUrlsFromPage(pageJson) {
-//    console.log('dans LoopToGetUrlFromPage : ' + this.length + ' ' + this.urls_movies.length)
     let urls = [];
     let urls_count = this.length - this.urls_movies.length;
-//    console.log('urls_count = ' + urls_count)
     for (let index=0; index<pageJson.results.length;index++){
         if (urls_count != 0) {
             urls.push(pageJson.results[index].url);
@@ -199,11 +179,9 @@ class Categories {
     for (let i in urls){
         this.urls_movies.push(urls[i]);
     }
-//    console.log('this_urls_movies = '  + this.urls_movies.length + ' ' + this.urls_movies)
 }
 
     async getRawInfoFromApi(url){
-//        console.log('dans getRawInfoFromApi()')
         const response = await fetch(url);
         var data = await response.json();
         return data
@@ -220,7 +198,6 @@ close_btn.onclick = function() {
 }
 
 function modify_popUp_content(movie){
-    console.log('click sur le film : ' + movie.title);
     let info_movie_left = "<ul>";
     const info_movie_dico = {Titre: movie.title, Genre: movie.genres, 'Score imdb': movie.imdb_score, Durée: movie.duration + "minutes", 'Date de sortie': movie.year,
      Pays: movie.countries, Réalisateurs: movie.directors, Acteurs: movie.actors, Rated: movie.rated, 'Résultat au box ofice': movie.worldwide_gross_income};
@@ -229,7 +206,6 @@ function modify_popUp_content(movie){
         info_movie_left = info_movie_left.concat(line);
     }
     info_movie_left = info_movie_left + "</ul>"
-    console.log(info_movie_left)
     movie_cover_in_modal.innerHTML = "<div id='movie_cover_in_modal'><img alt='' title='' src=" + movie.image_url + "></div>";
     movie_info_left.innerHTML = "<div id='movie_info_in_modal'>" + info_movie_left + "</div>";
     movie_description_in_modal.innerHTML = '<div id="movie_description"><strong>Description: </strong>' + movie.long_description + '</div>'
@@ -242,7 +218,6 @@ function best_movie_display(movie_category) {
     const best_movie_cover = document.getElementById("best_movie_cover");
     const best_movie_title = document.getElementById("best_movie_title");
     const best_movie_description = document.getElementById("best_movie_description");
-//    console.log(movie_category.movies[0].image_url, movie_category.movies[0].title);
     best_movie_cover.innerHTML = "<div id='best_movie_cover'><img src=" + movie_category.movies[0].image_url + " alt='' /></div>";
     best_movie_title.innerHTML = "<div id='best_movie_title'><strong>" + movie_category.movies[0].title + "</strong></div>";
     best_movie_description.innerHTML = "<div id='best_movie_description'><strong>Description: </strong>" + movie_category.movies[0].long_description + "</div>";
@@ -251,12 +226,10 @@ function best_movie_display(movie_category) {
 async function main() {
     const category_best = await new Categories(url_get_best_movies,8,0);
     category_best.left_arrow.onclick = function() {
-        console.log('test fleche gauche');
         category_best.basic_display();
 
     }
     category_best.right_arrow.onclick = function() {
-        console.log('test fleche droite');
         category_best.display_next_movies();
     }
 
@@ -267,34 +240,28 @@ async function main() {
 
     const category_comedy = await new Categories(url_get_comedy_movies,7,1);
     category_comedy.left_arrow.onclick = function() {
-        console.log('test fleche gauche');
         category_comedy.basic_display();
 
     }
     category_comedy.right_arrow.onclick = function() {
-        console.log('test fleche droite');
         category_comedy.display_next_movies();
     }
 
     const category_family = await new Categories(url_get_family_movies,7,2);
     category_family.left_arrow.onclick = function() {
-        console.log('test fleche gauche');
         category_family.basic_display();
 
     }
     category_family.right_arrow.onclick = function() {
-        console.log('test fleche droite');
         category_family.display_next_movies();
     }
 
     const category_animation = await new Categories(url_get_animation_movies,7,3);
     category_animation.left_arrow.onclick = function() {
-        console.log('test fleche gauche');
         category_animation.basic_display();
 
     }
     category_animation.right_arrow.onclick = function() {
-        console.log('test fleche droite');
         category_animation.display_next_movies();
     }
 }
